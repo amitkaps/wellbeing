@@ -7,7 +7,7 @@ output: html_document
 
 Load the dataset
 ```{r}
-region <- read.csv("data/oecdRegion.csv")
+region <- read.csv("data/oecdRegion.csv", stringsAsFactors = FALSE)
 str(region)
 ```
 
@@ -17,13 +17,20 @@ region$Education[region$Education == ".."] <- NA
 region$Accessiblity_to_Services[region$Accessiblity_to_Services 
                                 == ".."] <- NA
 region$Housing[region$Housing == ".."] <- NA
+str(region)
 
+# Fix the NA in this data
 region$Education <- as.numeric(region$Education)
 region$Accessiblity_to_Services <- as.numeric(region$Accessiblity_to_Services)
 region$Housing <- as.numeric(region$Housing)
 str(region)
 
+# Fix the Estonia Problem
+region$Country[region$Country == "Estonia TL3"] <- "Estonia"
+
+
 # Remove the region name due to unicode error
+# May need to manually clean up
 region <- region[,c(1,3:12)]
 
 write.csv(region, "data/oecdRegionClean.csv", quote = FALSE,
